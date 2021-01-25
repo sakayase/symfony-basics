@@ -19,6 +19,9 @@ security:
             lazy: true
             provider: app_user_provider
 
+            logout:
+                path: app_logout
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -28,5 +31,16 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/user, roles: ROLE_ADMIN }
+        - { path: ^/school-year, roles: [ROLE_ADMIN, ROLE_TEACHER, ROLE_STUDENT] }
+        # Acces en lecture seul a school-year pour student (acces a /school-year OK mais pas a ../edit ou ../new)
+        - { path: ^/school-year/new, roles: [ROLE_ADMIN, ROLE_TEACHER] }
+        - { path: '^/school-year/[0-9]+/edit', roles: [ROLE_ADMIN, ROLE_TEACHER] }
+        # [0-9]+ -> 
+        # [] = ensemble de charactere (là uniquement des chiffres)
+        # + = 1 ou plus
+        # * = 0 ou plus
+        - { path: ^/project, roles: [ROLE_ADMIN, ROLE_TEACHER, ROLE_STUDENT] }
+        - { path: '^/project/[0-9]+', roles: ROLE_USER }
