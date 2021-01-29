@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 /**
  * @Route("/project")
  */
@@ -20,6 +21,12 @@ class ProjectController extends AbstractController
      */
     public function index(ProjectRepository $projectRepository): Response
     {
+        // $this->denyAccessUnlessGranted([
+        //     'ROLE_ADMIN',
+        //     'ROLE_TEACHER',
+        // ]);
+
+
         return $this->render('project/index.html.twig', [
             'projects' => $projectRepository->findAll(),
         ]);
