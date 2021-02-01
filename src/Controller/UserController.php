@@ -53,8 +53,13 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
+        if ($this->isGranted('ROLE_STUDENT')) {
+            $schoolYear = $this->getUser()->getSchoolYear();
+        }
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'school_year' => $schoolYear,
         ]);
     }
 

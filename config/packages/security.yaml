@@ -34,37 +34,49 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-            - { path: ^/admin, roles: ROLE_ADMIN }
-            - { path: ^/profile, roles: ROLE_USER }
-            - { path: ^/user, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/user, roles: ROLE_ADMIN }
 
-            # admin
-            - { path: ^/school-year, roles: ROLE_ADMIN }
+        # school_year_index
+        - { path: ^/school-year/?$, roles: [ROLE_ADMIN, ROLE_TEACHER] }
+        # school_year_new
+        - { path: ^/school-year/new$, roles: ROLE_ADMIN }
+        # school_year_show
+        - { path: '^/school-year/[0-9]+$', roles: [ROLE_ADMIN, ROLE_TEACHER, ROLE_STUDENT], methods: GET }
+        # school_year_edit
+        - { path: '^/school-year/[0-9]+/edit$', roles: [ROLE_ADMIN, ROLE_TEACHER] }
+        # school_year_delete
+        - { path: '^/school-year/[0-9]+$', roles: ROLE_ADMIN, methods: DELETE } 
 
-            # teacher
-            - { path: '^/school-year/?$', roles: ROLE_TEACHER }
-            - { path: '^/school-year/[0-9]+', roles: ROLE_TEACHER, methods: GET }
-            - { path: '^/school-year/[0-9]+/edit', roles: ROLE_TEACHER }
-
-            # student
-            - { path: '^/school-year/[0-9]+', roles: ROLE_STUDENT, methods: GET }
-
-            # client
-            # rien
-
-            # projects
-            # admin, teacher : tout
-            - { path: ^/project, roles: [ROLE_ADMIN, ROLE_TEACHER]}
             
-            # student : lister ses projets, modifier (sans changer les relations, voir le detail de leur projet)
-            - { path: '^/project/?$', roles: ROLE_STUDENT} #Uniquement acces a l'index
-            - { path: '^/project/[0-9]+/edit', roles: ROLE_STUDENT}
-            - { path: '^/project/[0-9]+', roles: ROLE_STUDENT}
+            # # admin
+            # - { path: ^/school-year, roles: ROLE_ADMIN }
 
-            # client : lister ses projets, voir le détail de leurs projets
-            - { path: '^/project/?$', roles: ROLE_STUDENT}
-            - { path: '^/project/[0-9]+', roles: ROLE_STUDENT}
+            # # teacher
+            # - { path: '^/school-year/?$', roles: ROLE_TEACHER }
+            # - { path: '^/school-year/[0-9]+', roles: ROLE_TEACHER, methods: GET }
+            # - { path: '^/school-year/[0-9]+/edit', roles: ROLE_TEACHER }
+
+            # # student
+            # - { path: '^/school-year/[0-9]+', roles: ROLE_STUDENT, methods: GET }
+
+            # # client
+            # # rien
+
+            # # projects
+            # # admin, teacher : tout
+            # - { path: ^/project, roles: [ROLE_ADMIN, ROLE_TEACHER]}
+            
+            # # student : lister ses projets, modifier (sans changer les relations, voir le detail de leur projet)
+            # - { path: '^/project/?$', roles: ROLE_STUDENT} #Uniquement acces a l'index
+            # - { path: '^/project/[0-9]+/edit', roles: ROLE_STUDENT}
+            # - { path: '^/project/[0-9]+', roles: ROLE_STUDENT}
+
+            # # client : lister ses projets, voir le détail de leurs projets
+            # - { path: '^/project/?$', roles: ROLE_STUDENT}
+            # - { path: '^/project/[0-9]+', roles: ROLE_STUDENT}
 
 
-            # - { path: ^/project, roles: [ROLE_ADMIN, ROLE_TEACHER, ROLE_STUDENT] }
-            # - { path: '^/project/[0-9]+', roles: ROLE_USER }
+            # # - { path: ^/project, roles: [ROLE_ADMIN, ROLE_TEACHER, ROLE_STUDENT] }
+            # # - { path: '^/project/[0-9]+', roles: ROLE_USER }

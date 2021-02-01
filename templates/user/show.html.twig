@@ -42,5 +42,7 @@
 
     <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
 
+    <a href="{{ path('school_year_show', {'id': school_year.id}) }}">Promo {{school_year.id}}</a>
+
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
