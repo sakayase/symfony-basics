@@ -7,6 +7,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SchoolYearType extends AbstractType
@@ -16,7 +17,13 @@ class SchoolYearType extends AbstractType
         $builder
             ->add('name')
             ->add('dateStart')
-            ->add('dateEnd')
+            ->add('dateEnd', DateType::class, [
+                'label' => 'Date de début',
+                'widget' => 'choice',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'input' => 'datetime_immutable',
+            ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => function($user) {

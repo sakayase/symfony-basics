@@ -55,7 +55,7 @@ class SchoolYearController extends AbstractController
     public function show(SchoolYear $schoolYear): Response
     {
         // @todo générer une exception si un student demande une school year qui n'est pas la sienne
-        if ($this->getUser()->getSchoolYear() !== $schoolYear) {
+        if ($this->getUser()->getSchoolYear() !== $schoolYear && $this->getUser()->getRoles() == ["ROLE_STUDENT"]) {
             throw new AccessDeniedException();
         }
 

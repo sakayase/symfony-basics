@@ -55,12 +55,16 @@ class UserController extends AbstractController
     {
         if ($this->isGranted('ROLE_STUDENT')) {
             $schoolYear = $this->getUser()->getSchoolYear();
+            return $this->render('user/show.html.twig', [
+                'user' => $user,
+                'school_year' => $schoolYear,
+            ]);
+        } else {
+            return $this->render('user/show.html.twig', [
+                'user' => $user,
+            ]);
         }
 
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-            'school_year' => $schoolYear,
-        ]);
     }
 
     /**

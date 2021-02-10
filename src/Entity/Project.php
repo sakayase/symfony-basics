@@ -6,6 +6,8 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
@@ -20,16 +22,28 @@ class Project
     private $id;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 190
+     * ) 
      * @ORM\Column(type="string", length=190)
      */
     private $name;
 
     /**
+     * @Assert\Length(
+     *      max = 1000
+     * )
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @Assert\Count(
+     *      min = 1,
+     *      max = 4
+     * )
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="projects")
      */
     private $users;

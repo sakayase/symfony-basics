@@ -25,16 +25,23 @@ class AppFixtures extends Fixture
         // rend utilisable manager dans toute la classe
         $this->faker = \Faker\Factory::create('fr_FR');
         
+        // Todo : 
+        // créer quelques users avec des noms prévus à l'avance pour pouvoir tester nous même les fonctionnalités
+        // créer un faux utilisateur avec l'id 1 sans privilège (si attaque de bot, il prendra probablement le 1er user qui est généralement admin)
+        $this->loadAdmin();
         $this->loadUser(60, "ROLE_STUDENT");
         $this->loadUser(5, "ROLE_TEACHER");
         $this->loadUser(15, "ROLE_CLIENT");
-
+        
         $this->loadProject(15);
-
+        
         $this->loadSchoolYear(5);
         
         $this->loadUserSchoolYearRelation(5);
-
+        
+        // Todo : 
+        // ajouter relations entre student et projet
+        //                   entre client et projet
     }
     
     public function loadUser(int $count, string $role): void 
@@ -70,6 +77,22 @@ class AppFixtures extends Fixture
             // pour generer les fixtures : php bin/console doctrine:fixtures:load
         }
     
+        $this->manager->flush();
+    }
+
+    public function loadAdmin(): void 
+    {
+        $user = new User();
+        $password = $this->encoder->encodePassword($user, 'admin');
+        $user->setFirstname("admin")
+            ->setLastname('admin')
+            ->setEmail('admin@gmail.com')
+            ->setPhone('0648449142')
+            ->setRoles(["ROLE_ADMIN"])
+            ->setPassword($password);
+
+        $this->manager->persist($user);
+
         $this->manager->flush();
     }
 
@@ -130,19 +153,26 @@ class AppFixtures extends Fixture
         $schoolYears = $schoolYearRepository->findAll();
 
         $userRepository = $this->manager->getRepository(User::class);
-        $users = $userRepository->findAll();
-        // $users = $userRepository->findBy([
-        //     'roles' => ["ROLE_STUDENT"]
-        //     ]);
+        
+        // on filtre les users en gardant que les users qui ont pour role 'ROLE_STUDENT'
+        // Avec la methode array_filter
+        // $users = $userRepository->findAll();
+        // $students = array_filter($users, function($user) {
+        //     return in_array('ROLE_STUDENT', $user->getRoles());
+        // });
+            
+        // Avec la methode crée dans UserRepository
+        $students = $userRepository->findByRole('ROLE_STUDENT');
     
-        foreach ($users as $i => $user) {
+        foreach ($students as $i => $student) {
             // permet de donner une schoolyear differente par cycle de $countSchoolYear
             $remainder = $i % $countSchoolYear;
-            $user->setSchoolYear($schoolYears[$remainder]);
+            $student->setSchoolYear($schoolYears[$remainder]);
             
-            $this->manager->persist($user);
+            $this->manager->persist($student);
         }
 
         $this->manager->flush();
     }
 }
+

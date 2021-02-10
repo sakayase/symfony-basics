@@ -6,9 +6,13 @@ use App\Repository\SchoolYearRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SchoolYearRepository::class)
+ * @UniqueEntity("name")
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"name"})})
  */
 class SchoolYear
 {
@@ -30,6 +34,8 @@ class SchoolYear
     private $dateStart;
 
     /**
+     * @Assert\Date
+     * @Assert\GreaterThan("today")
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateEnd;
@@ -42,6 +48,7 @@ class SchoolYear
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->dateStart = new \DateTime();
     }
 
     public function getId(): ?int
