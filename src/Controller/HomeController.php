@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Project;
+use App\Repository\ProjectRepository;
 use App\Service\Random;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +35,10 @@ class HomeController extends AbstractController
         $projects = $rnd->getProjects();
         $meteoUrl = $rnd->getMeteoUrl();
 
+        $session->getFlashBag()->add(
+            'info',
+            'FlashBag info'
+        );
 
         // Afficher le template home/index.html
         return $this->render('home/index.html.twig');
@@ -61,6 +67,91 @@ class HomeController extends AbstractController
     {
         $name = $session->get('name');
         dump($name);
+        exit();
+    }
+
+    /**
+     * @Route("/caddie")
+     */
+    public function caddie(SessionInterface $session, ProjectRepository $repository)
+    {
+        if (!$session->has('caddie')) {
+            $session->set('caddie', []);
+        }
+
+        $projects = [];
+
+        // foreach($session->get('caddie') as $id) {
+        //     $project = $repository->find($id);
+        //     $projects[] = $project;
+        // }
+
+        // fait la même chose que la boucle foreach précédente
+        $projects = array_map(function($id) use ($repository) {
+            return $repository->find($id);
+        }, $session->get('caddie'));
+
+        // Dans un vrai projet, a faire dans le template twig:
+        foreach($projects as $project) {
+            dump($project->getName());
+        }
+
+        exit();
+    }
+
+    /**
+     * @Route("/caddie/add/{id}")
+     */
+    public function caddieAdd(SessionInterface $session, Project $project)
+    {   // On passe {id} dans l'url, Symfony sait qu'il faut rechercher dans les projets si l'id correspond a un projet
+        // Si c'est le cas, dans la fonction on ajoute l'id à $caddie, mais si il n'est pas trouvé, il renvoie une erreur 404
+        if (!$session->has('caddie')) {
+            $session->set('caddie', []);
+        }
+
+        $caddie = $session->get('caddie');
+        $caddie[] = $project->getId();
+        $session->set('caddie', $caddie);
+
+        dump($caddie);
+        exit();
+    }
+
+    /**
+     * @Route("/caddie/remove/{id}")
+     */
+    public function caddieRemove(SessionInterface $session, int $id)
+    {
+        if (!$session->has('caddie')) {
+            $session->set('caddie', []);
+        }
+
+        $caddie = $session->get('caddie');
+
+        // voir version alternative avec array_filter() ci-dessous
+        $caddieTmp = [];
+
+        // foreach ($caddie as $projectId) {
+        //     if ($projectId != $id) {
+        //         $caddieTmp[] = $projectId;
+        //     }
+        // }
+
+        // $caddie = $caddieTmp;
+
+        // fait la même chose que la boucle foreach précédente
+        $caddie = array_filter($caddie, function($projectId) use ($id) {
+            if ($projectId == $id) {
+                return false;
+            }
+
+            return true;
+        });
+
+        $session->set('caddie', $caddie);
+
+        dump($caddie);
+
         exit();
     }
 }
