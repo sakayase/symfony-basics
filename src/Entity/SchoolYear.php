@@ -29,12 +29,15 @@ class SchoolYear
     private $name;
 
     /**
+     * @Assert\Type("\DateTimeInterface")
+     * Assert\GreaterThan("-10 years")
+     * @Assert\GreaterThan(value = "2010-01-01")
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateStart;
 
     /**
-     * @Assert\Date
+     * @Assert\Type("\DateTimeInterface")
      * @Assert\GreaterThan("today")
      * @ORM\Column(type="date", nullable=true)
      */

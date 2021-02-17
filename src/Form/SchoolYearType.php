@@ -16,13 +16,13 @@ class SchoolYearType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('dateStart')
-            ->add('dateEnd', DateType::class, [
-                'label' => 'Date de début',
-                'widget' => 'choice',
+            ->add('dateStart', DateType::class, [
                 'html5' => false,
                 'format' => 'dd/MM/yyyy',
-                'input' => 'datetime_immutable',
+            ])
+            ->add('dateEnd', DateType::class, [
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
             ])
             ->add('users', EntityType::class, [
                 'class' => User::class,
