@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=SchoolYearRepository::class)
  * @UniqueEntity("name")
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"name"})})
@@ -18,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SchoolYear
 {
     /**
-     * @ApiResource
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")

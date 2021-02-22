@@ -11,12 +11,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
  */
 class Project
 {
     /**
-     * @ApiResource
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
