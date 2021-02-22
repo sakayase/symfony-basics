@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Project
 {
     /**
+     * @ApiResource
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
