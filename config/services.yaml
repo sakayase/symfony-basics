@@ -32,3 +32,11 @@ services:
     App\Service\Random:
         arguments:
             $meteoUrl: '%env(resolve:METEO_URL)%'
+
+    App\EventListener\UserPasswordHasher:
+        tags:
+            -
+                # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'prePersist'
+                entity: 'App\Entity\User'
